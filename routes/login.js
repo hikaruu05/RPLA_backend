@@ -29,7 +29,10 @@ const loginRouter = router.post('/login', async (req, res) => {
                 sameSite: "strict",
                 maxAge: jwtExpirySeconds * 1000
             })
-            res.json({ message: 'Successfully logged in' })
+            res.json({ 
+                message: 'Successfully logged in', 
+                redirectTo: '/projects' // Diubah ketika sudah ada interface dari frontend
+            });
 
         } catch (err) {
             return res.status(400).json({ message: err.message })
