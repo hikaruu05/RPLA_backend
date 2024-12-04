@@ -22,8 +22,11 @@ const registerRouter = router.post('/register', async (req, res) => {
                 password: password
             })
             await user.save()
-            return res.status(201).json(user)
-        } catch (err) {
+            return res.status(201).json({ 
+                message: 'Successfully registered', 
+                redirectTo: '/project' // Path redireksi setelah berhasil registrasi
+            })
+         } catch (err) {
             return res.status(400).json({ message: err.message })
         }
     }
