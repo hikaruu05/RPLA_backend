@@ -1,14 +1,16 @@
+// login function using bcrypt and jsonwebtoken for authentication
+
 require('dotenv').config()
-const { User, validate } = require('../models/user')
+const { User, validateLogin } = require('../db/userModel')
 const bcrypt = require('bcrypt')
 const express = require('express')
 const jwt = require('jsonwebtoken')
-const router = express.Router()
+const app = express();
 const SECRET = process.env.SECRET
 const jwtExpirySeconds = 300
 
-const loginRouter = router.post('/login', async (req, res) => {
-    const { error } = validate(req.body)
+const loginRouter = app.post('/login', async (req, res) => {
+    const { error } = validateLogin(req.body)
     if (error) {
         return res.status(401).send(error.details[0].message)
     } else {
@@ -29,12 +31,15 @@ const loginRouter = router.post('/login', async (req, res) => {
                 sameSite: "strict",
                 maxAge: jwtExpirySeconds * 1000
             })
-            res.json({ message: 'Successfully logged in' })
+            res.json({ 
+                message: 'Successfully logged in', 
+                redirectTo: '/projects' // Diubah ketika sudah ada interface dari frontend
+            })
 
-        } catch (err) {
+            } catch (err) {
             return res.status(400).json({ message: err.message })
         }
     }
-})
+    })
 
 module.exports = loginRouter
