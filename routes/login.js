@@ -34,8 +34,7 @@ const loginRouter = app.post('/login', async (req, res) => {
             res.json({ 
                 message: 'Successfully logged in', 
                 redirectTo: '/projects' // Diubah ketika sudah ada interface dari frontend
-            })
-
+            });
             } catch (err) {
             return res.status(400).json({ message: err.message })
         }
