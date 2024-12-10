@@ -24,7 +24,7 @@ const loginRouter = app.post('/login', async (req, res) => {
                 return res.status(400).json({ message: 'Incorrect email or password.' })
             }
             const tokenPayload = { id: user._id, role: user.role };
-            const token = jwt.sign({ id: user._id }, SECRET)
+            const token = jwt.sign(tokenPayload, SECRET, { expiresIn: jwtExpirySeconds })
             res.cookie(
                 "token", token, {
                 httpOnly: true,
