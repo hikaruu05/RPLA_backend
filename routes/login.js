@@ -23,6 +23,7 @@ const loginRouter = app.post('/login', async (req, res) => {
             if (!correctPassword) {
                 return res.status(400).json({ message: 'Incorrect email or password.' })
             }
+            const tokenPayload = { id: user._id, role: user.role };
             const token = jwt.sign({ id: user._id }, SECRET)
             res.cookie(
                 "token", token, {
@@ -31,14 +32,21 @@ const loginRouter = app.post('/login', async (req, res) => {
                 sameSite: "strict",
                 maxAge: jwtExpirySeconds * 1000
             })
-            res.json({ 
-                message: 'Successfully logged in', 
-                redirectTo: '/projects' // Diubah ketika sudah ada interface dari frontend
-            })
+
+            if (user.role === 'admin') {
+                return res.json({ 
+                    message: 'Successfully logged in as admin', 
+                    redirectTo: '/admin-dashboard'
+                })
+            } else {
+                return res.json({ 
+                    message: 'Successfully logged in as user', 
+                    redirectTo: '/user-dashboard'
+                })
+            }
             } catch (err) {
             return res.status(400).json({ message: err.message })
         }
     }
     })
-
 module.exports = loginRouter
