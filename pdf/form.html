@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Data Tugas</title>
+</head>
+<body>
+    <h1>Form Data Tugas</h1>
+    <form id="taskForm" action="/generate-pdf" method="POST" enctype="multipart/form-data">
+        <label for="taskNumber">No. Tugas:</label>
+        <input type="text" id="taskNumber" name="taskNumber" required>
+        <br><br>
+        
+        <label for="taskQuestion">Soal Tugas:</label>
+        <textarea id="taskQuestion" name="taskQuestion" required></textarea>
+        <br><br>
+        
+        <label for="sqlStatement">Statement SQL:</label>
+        <textarea id="sqlStatement" name="sqlStatement" required></textarea>
+        <br><br>
+        
+        <label for="queryPurpose">Tujuan/Penjelasan Query:</label>
+        <textarea id="queryPurpose" name="queryPurpose" required></textarea>
+        <br><br>
+        
+        <label for="queryResult">Hasil Query/SQL (gambar):</label>
+        <input type="file" id="queryResult" name="queryResult" accept="image/*" required>
+        <br><br>
+        
+        <button type="submit">Buat PDF</button>
+    </form>
+</body>
+</html>
