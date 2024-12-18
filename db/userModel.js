@@ -21,8 +21,13 @@ const userSchema = new mongoose.Schema({
         min: [8, "Password is 8 required to be 8 characters long!"],
         max: 100
 
+    },
+    role: {
+        type: String,
+        enum: ['admin', 'user'],
+        default: 'user'
     }
-})
+});
 
 function validateUser(user) {
     const schema = Joi.object({
