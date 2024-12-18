@@ -58,13 +58,28 @@ app.post("/generate-pdf", upload.single("queryResult"), (req, res) => {
     // Baris 2: Soal Tugas
     currentY += drawCell(startX, currentY, tableWidth, `Soal Tugas:\n${taskQuestion}`, { align: "left" });
 
-    // Baris 3: Statement SQL
-    const leftWidth = tableWidth / 2;
-    const rightWidth = tableWidth / 2;
+// Baris 3: Statement SQL dan Tujuan/Penjelasan Query
+const leftWidth = tableWidth / 2;
+const rightWidth = tableWidth / 2;
 
-    const sqlHeight = drawCell(startX, currentY, leftWidth, `Statement SQL:\n${sqlStatement}`, { align: "left" });
-    const purposeHeight = drawCell(startX + leftWidth, currentY, rightWidth, `Tujuan/Penjelasan Query:\n${queryPurpose}`, { align: "left" });
-    currentY += Math.max(sqlHeight, purposeHeight); // Pilih tinggi terbesar untuk menyesuaikan baris
+// Hitung tinggi teks di kedua kolom terlebih dahulu
+const sqlTextHeight = doc.heightOfString(`Statement SQL:\n${sqlStatement}`, { width: leftWidth - 10 });
+const purposeTextHeight = doc.heightOfString(`Tujuan/Penjelasan Query:\n${queryPurpose}`, { width: rightWidth - 10 });
+
+// Ambil tinggi terbesar
+const maxHeight = Math.max(sqlTextHeight, purposeTextHeight) + 10;
+
+// Gambar kedua kolom dengan tinggi yang sama
+doc.rect(startX, currentY, leftWidth, maxHeight).stroke();
+doc.text(`Statement SQL:\n${sqlStatement}`, startX + 5, currentY + 5, { width: leftWidth - 10 });
+
+doc.rect(startX + leftWidth, currentY, rightWidth, maxHeight).stroke();
+doc.text(`Tujuan/Penjelasan Query:\n${queryPurpose}`, startX + leftWidth + 5, currentY + 5, { width: rightWidth - 10 });
+
+// Pindahkan posisi Y ke bawah
+currentY += maxHeight;
+
+
 
     // Baris 4: Hasil Query/SQL
     currentY += drawCell(startX, currentY, tableWidth, "Hasil Query/SQL:", { align: "left" });
